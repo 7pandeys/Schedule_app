@@ -1,0 +1,27 @@
+name: 🏅 Badge Hunter
+
+on:
+  workflow_dispatch:
+
+jobs:
+  badge-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PERSONAL_TOKEN }}
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: 🧰 Install GitHub CLI
+        run: |
+          sudo apt install gh -y
+          echo "${{ secrets.PERSONAL_TOKEN }}" | gh auth login --with-token
+
+      - name: 🚀 Run PR Generator
+        run: python generate-prs.py
